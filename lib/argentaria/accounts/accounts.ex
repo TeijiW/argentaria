@@ -10,6 +10,10 @@ defmodule Argentaria.Accounts do
   end
 
   def insert(attrs) do
-    Account.changeset(attrs) |> Repo.insert()
+    attrs |> Account.changeset() |> Repo.insert()
+  end
+
+  def update(account, attrs) do
+    account |> Account.changeset(attrs) |> Repo.update()
   end
 end
