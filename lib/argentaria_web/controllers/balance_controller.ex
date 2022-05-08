@@ -1,8 +1,8 @@
-defmodule Argentaria.Controllers.Balance do
+defmodule ArgentariaWeb.Controllers.Balance do
   use ArgentariaWeb, :controller
   alias Argentaria.Accounts
 
-  def show(conn, %{account_id: account_id} = _params) do
+  def show(conn, %{"account_id" => account_id} = _params) do
     account_id |> Accounts.get_one() |> handle_response(conn)
   end
 
