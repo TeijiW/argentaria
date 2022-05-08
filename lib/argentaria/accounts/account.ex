@@ -4,9 +4,10 @@ defmodule Argentaria.Accounts.Account do
 
   @fields [:balance, :id]
 
+  @derive {Jason.Encoder, except: [:__meta__]}
   @primary_key {:id, :id, autogenerate: false}
   schema "accounts" do
-    field(:balance, :decimal)
+    field(:balance, :float)
     timestamps()
   end
 

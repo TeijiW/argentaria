@@ -3,7 +3,7 @@ defmodule Argentaria.Repo.Migrations.CreateAccountsTable do
 
   def change do
     create table(:accounts) do
-      add(:balance, :decimal)
+      add(:balance, :float)
       timestamps()
     end
   end
