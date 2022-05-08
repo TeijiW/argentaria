@@ -1,4 +1,4 @@
-defmodule ArgentariaWeb.Controllers.BalanceTest do
+defmodule ArgentariaWeb.BalanceControllerTest do
   use ArgentariaWeb.ConnCase, async: true
   import Argentaria.Support.AccountsFixtures
 

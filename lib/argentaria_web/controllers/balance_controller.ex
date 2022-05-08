@@ -1,4 +1,4 @@
-defmodule ArgentariaWeb.Controllers.Balance do
+defmodule ArgentariaWeb.BalanceController do
   use ArgentariaWeb, :controller
   alias Argentaria.Accounts
 
