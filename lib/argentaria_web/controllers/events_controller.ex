@@ -13,16 +13,16 @@ defmodule ArgentariaWeb.EventsController do
     |> handle_save_response(conn, :deposit)
   end
 
-  defp save_account({:ok, account = %Account{}}, {_account_id, value}) do
-    Accounts.update(account, %{balance: account.balance + value})
-  end
+  defp save_account({:ok, account = %Account{}}, {_account_id, value}),
+    do: Accounts.update(account, %{balance: account.balance + value})
 
-  defp save_account({:error, :not_found}, {account_id, value}) do
-    Accounts.insert(%{id: account_id, balance: value})
-  end
+  defp save_account({:error, :not_found}, {account_id, value}),
+    do: Accounts.insert(%{id: account_id, balance: value})
 
   defp handle_save_response({:ok, account}, conn, :deposit) do
-    render(conn, "deposit.json", account: account)
+    conn
+    |> put_status(:created)
+    |> render("deposit.json", account: account)
   end
 
   defp handle_save_response({:error, changeset}, conn, _event_type) do
