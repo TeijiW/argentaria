@@ -8,6 +8,6 @@ defmodule ArgentariaWeb.Router do
   scope "/api", ArgentariaWeb do
     pipe_through :api
 
-    resources "/balance", Controllers.Balance, only: [:show], param: "account_id"
+    resources "/balance", Controllers.Balance, only: [:show], param: "account_id", singleton: true
   end
 end
