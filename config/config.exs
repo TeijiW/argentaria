@@ -8,8 +8,7 @@
 import Config
 
 config :argentaria,
-  ecto_repos: [Argentaria.Repo],
-  generators: [binary_id: true]
+  ecto_repos: [Argentaria.Repo]
 
 # Configures the endpoint
 config :argentaria, ArgentariaWeb.Endpoint,
