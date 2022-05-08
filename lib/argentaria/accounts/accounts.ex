@@ -8,4 +8,8 @@ defmodule Argentaria.Accounts do
       nil -> {:error, :not_found}
     end
   end
+
+  def insert(attrs) do
+    Account.changeset(attrs) |> Repo.insert()
+  end
 end

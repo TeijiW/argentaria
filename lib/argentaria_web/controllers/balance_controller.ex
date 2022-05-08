@@ -3,9 +3,14 @@ defmodule ArgentariaWeb.Controllers.Balance do
   alias Argentaria.Accounts
 
   def show(conn, %{"account_id" => account_id} = _params) do
-    account_id |> Accounts.get_one() |> handle_response(conn)
-  end
+    case Accounts.get_one(account_id) do
+      {:ok, account} ->
+        json(conn, account.balance)
 
-  defp handle_response({:ok, account}, conn), do: json(conn, account)
-  defp handle_response(error, _conn), do: error
+      {:error, :not_found} ->
+        conn
+        |> put_status(:not_found)
+        |> json(0)
+    end
+  end
 end
