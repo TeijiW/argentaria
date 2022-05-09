@@ -24,6 +24,12 @@ defmodule ArgentariaWeb do
       import Plug.Conn
       import ArgentariaWeb.Gettext
       alias ArgentariaWeb.Router.Helpers, as: Routes
+
+      def pretty_json(conn, data) do
+        conn
+        |> put_resp_header("content-type", "application/json; charset=utf-8")
+        |> send_resp(200, Jason.encode!(data, pretty: true))
+      end
     end
   end
 

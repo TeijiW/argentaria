@@ -19,5 +19,11 @@ defmodule ArgentariaWeb.EventsView do
     }
   end
 
-  defp build_account_info(account), do: %{id: account.id, balance: account.balance}
+  defp build_account_info(account),
+    do: %{id: account.id, balance: maybe_convert_to_int(account.balance)}
+
+  defp maybe_convert_to_int(value) do
+    rounded_value = round(value)
+    if rounded_value == value, do: rounded_value, else: value
+  end
 end
