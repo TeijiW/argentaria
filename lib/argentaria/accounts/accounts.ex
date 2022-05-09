@@ -3,6 +3,8 @@ defmodule Argentaria.Accounts do
   alias Argentaria.Repo
   alias Ecto.Multi
 
+  def delete_all, do: Repo.delete_all(Account)
+
   def get_one(account_id), do: Repo.get(Account, account_id)
 
   def insert(attrs) do
