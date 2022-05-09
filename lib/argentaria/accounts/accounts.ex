@@ -1,13 +1,9 @@
 defmodule Argentaria.Accounts do
   alias Argentaria.Accounts.Account
   alias Argentaria.Repo
+  alias Ecto.Multi
 
-  def get_one(account_id) do
-    case Repo.get(Account, account_id) do
-      %Account{} = account -> {:ok, account}
-      nil -> {:error, :not_found}
-    end
-  end
+  def get_one(account_id), do: Repo.get(Account, account_id)
 
   def insert(attrs) do
     attrs |> Account.changeset() |> Repo.insert()
@@ -15,5 +11,17 @@ defmodule Argentaria.Accounts do
 
   def update(account, attrs) do
     account |> Account.changeset(attrs) |> Repo.update()
+  end
+
+  def transfer_balance(origin, destination, amount) do
+    origin_changeset = Account.changeset(origin, %{balance: origin.balance - amount})
+
+    destination_changeset =
+      Account.changeset(destination, %{balance: destination.balance + amount})
+
+    Multi.new()
+    |> Multi.update(:origin_account, origin_changeset)
+    |> Multi.update(:destination_account, destination_changeset)
+    |> Repo.transaction()
   end
 end

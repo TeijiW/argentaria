@@ -1,6 +1,6 @@
 defmodule ArgentariaWeb.EventsController do
   use ArgentariaWeb, :controller
-  alias Argentaria.Events
+  alias Argentaria.Operations
 
   action_fallback ArgentariaWeb.FallbackController
 
@@ -9,8 +9,21 @@ defmodule ArgentariaWeb.EventsController do
         %{"type" => event_type} = params
       ) do
     params
-    |> Events.operation(event_type)
+    |> Operations.call(event_type)
     |> handle_response(conn, event_type)
+  end
+
+  defp handle_response(
+         {:ok, %{origin_account: origin_account, destination_account: destination_account}},
+         conn,
+         "transfer"
+       ) do
+    conn
+    |> put_status(:created)
+    |> render("transfer.json",
+      origin_account: origin_account,
+      destination_account: destination_account
+    )
   end
 
   defp handle_response({:ok, account}, conn, event_type) do

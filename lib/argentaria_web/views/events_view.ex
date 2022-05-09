@@ -9,5 +9,15 @@ defmodule ArgentariaWeb.EventsView do
     %{origin: build_account_info(account)}
   end
 
+  def render("transfer.json", %{
+        origin_account: origin_account,
+        destination_account: destination_account
+      }) do
+    %{
+      origin: build_account_info(origin_account),
+      destination: build_account_info(destination_account)
+    }
+  end
+
   defp build_account_info(account), do: %{id: account.id, balance: account.balance}
 end
