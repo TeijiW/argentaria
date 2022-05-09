@@ -5,7 +5,7 @@ defmodule ArgentariaWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", ArgentariaWeb do
+  scope "/", ArgentariaWeb do
     pipe_through :api
 
     resources "/balance", BalanceController, only: [:show], singleton: true
