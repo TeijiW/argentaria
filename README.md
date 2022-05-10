@@ -1,4 +1,7 @@
 # Argentaria
+A basic and small REST API made with Elixir and Phoenix for accounts
+
+## Setup
 
 To start your Phoenix server:
 
@@ -6,14 +9,57 @@ To start your Phoenix server:
   * Create and migrate your database with `mix ecto.setup`
   * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+Great! Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+## Docs
 
-## Learn more
+### `/balance?account_id=1`
+This endpoint will give the balance from requested account
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+### `/reset`
+Endpoint to reset the accounts database
+
+### `/events`
+Endpoint to deposit, withdraw or transfer amount between accounts
+#### **`deposit` event**
+  Mandatory fields: 
+  ```
+  {
+    "type": "deposit",
+    "destination": "<account_id>",
+    "amount": 0
+  }
+  ```
+
+#### **`withdraw` event**
+  Mandatory fields: 
+  ```
+  {
+    "type": "withdraw",
+    "origin": "<account_id>",
+    "amount": 0
+  }
+  ```
+
+#### **`transfer` event**
+  Mandatory fields: 
+  ```
+  {
+    "type": "transfer",
+    "origin": "<account_id>",
+    "destination": "<account_id>",
+    "amount": 0
+  }
+  ```
+
+## Rules
+
+### Deposit
+- When the **deposit** is made to a non-existing account, the account will be created with a `balance` equal to the deposited `amount`.
+- When **deposit** is made to existing account, `amount` is added to the account balance 
+### Withdraw
+- When a **withdraw** is made from a non-existing account, the return is 404 http code with `"0"` text
+- When **withdraw** is made from a existing account, `amount` is subtracted from the account `balance`
+### Transfer
+- When a **transfer** is made from a non-existing account to an existing account, the return is 404 http code with `"0"` text
+- When **transfer** is made from a existing account to an existing account, `amount` is subtracted from the origin account `balance` and the `amount` is added to destination account `balance`
