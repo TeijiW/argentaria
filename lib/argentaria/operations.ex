@@ -19,11 +19,18 @@ defmodule Argentaria.Operations do
         },
         "transfer"
       ) do
-    with %Account{} = origin_account <- Accounts.get_one(origin_account_id),
-         %Account{} = destination_account <- Accounts.get_one(destination_account_id) do
-      Accounts.transfer_balance(origin_account, destination_account, amount)
-    else
-      _ -> {:error, :not_found}
+    origin_account = Accounts.get_one(origin_account_id)
+
+    destination_account =
+      Accounts.get_one(destination_account_id) ||
+        %Account{balance: 0, id: handle_id(destination_account_id)}
+
+    case origin_account do
+      %Account{} ->
+        Accounts.transfer_balance(origin_account, destination_account, amount)
+
+      nil ->
+        {:error, :not_found}
     end
   end
 
@@ -37,4 +44,7 @@ defmodule Argentaria.Operations do
     do: Accounts.update(account, %{balance: account.balance - amount})
 
   defp withdraw(nil, _account_id, _amount), do: {:error, :not_found}
+
+  defp handle_id(id) when is_binary(id), do: String.to_integer(id)
+  defp handle_id(id), do: id
 end

@@ -23,7 +23,7 @@ defmodule Argentaria.Accounts do
 
     Multi.new()
     |> Multi.update(:origin_account, origin_changeset)
-    |> Multi.update(:destination_account, destination_changeset)
+    |> Multi.insert_or_update(:destination_account, destination_changeset)
     |> Repo.transaction()
   end
 end
